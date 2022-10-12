@@ -12,12 +12,12 @@ RUN apt-get update && apt-get upgrade -y && \
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install --force
+RUN npm install 
 # If you are building your code for production
 # RUN npm ci --only=production
 
 
-RUN npm audit fix --force
+# RUN npm audit fix --force
 
 # Bundle app source
 COPY . .
