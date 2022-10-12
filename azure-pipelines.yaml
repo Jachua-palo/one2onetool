@@ -15,7 +15,7 @@ pool:
 steps:
 - script: |
    sed -i 's/Question.json/Question-test.json/g' models/questionRepository.js
-  condition: eq(variable['Build.SourceBranchName'], 'staging')
+  condition: eq(variable['Build.SourceBranch'], 'refs/heads/staging')
   displayName: 'Change Question bank'
 
 - task: NodeTool@0
@@ -35,7 +35,7 @@ steps:
     containerRegistry: dockerRegistryServiceConnection2
 
 - task: Docker@2
-  condition: eq(variable['Build.SourceBranchName'], 'staging')
+  condition: eq(variable['Build.SourceBranch'], 'refs/heads/staging')
   displayName: Build and Push
   inputs:
     command: buildAndPush
@@ -45,7 +45,7 @@ steps:
       $(Build.BuildID)
 
 - task: Docker@2
-  condition: eq(variable['Build.SourceBranchName'], 'release')
+  condition: eq(variable['Build.SourceBranch'], 'refs/heads/release')
   displayName: Build and Push
   inputs:
     command: buildAndPush
