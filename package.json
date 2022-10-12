@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "forever -w index.js",
-    "test": "jest",
-    "preinstall": "npx npm-force-resolutions"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
