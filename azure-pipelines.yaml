@@ -1,18 +1,27 @@
+
 # Node.js
 # Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
- branches:
-   include:
-    - release
-    - staging
+  branches:
+    include:
+     - release
+     - staging
+
+variables:
+    isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/release')]
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
+- script: |
+   sed -i 's/Question.json/Question-test.json/g' models/questionRepository.js
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
+  displayName: 'Change Question bank'
+
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -20,5 +29,52 @@ steps:
 
 - script: |
     npm install
-    npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install'
+
+- script: |
+    npm test
+  displayName: 'npm test'
+
+- task: Docker@2
+  displayName: Login to Docker Hub
+  inputs:
+    command: login
+    repository: 'jasnipes/one2on2'
+    containerRegistry: dockerhub
+
+- task: Docker@2
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: 'jasnipes/one2on2' # username/contosoRepository for DockerHub
+    tags: |
+      staging
+      $(Build.BuildID)
+
+- task: Docker@2
+  condition: and(succeeded(), eq(variables.isRelease, 'true'))
+  displayName: Build and Push
+  inputs:
+    command: buildAndPush
+    repository: 'jasnipes/one2on2' # username/contosoRepository for DockerHub
+    tags: |
+      latest
+      release
+      $(Build.BuildID)      
+
+- task: AzureWebAppContainer@1
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
+  inputs:
+    azureSubscription: 'sub-sg-SRE-Devops (f3f2ca0d-ff22-4e12-b86f-b32ddf56d95b)'
+    appName: 'one2oneantonstaging'
+    containers: 'jasnipes/one2on2:staging'
+
+- task: AzureWebAppContainer@1
+  condition: and(succeeded(), eq(variables.isRelease, 'true'))
+  inputs:
+    azureSubscription: 'sub-sg-SRE-Devops (f3f2ca0d-ff22-4e12-b86f-b32ddf56d95b)'
+    appName: 'one2oneanton'
+    containers: 'jasnipes/one2on2:release'
+
+  

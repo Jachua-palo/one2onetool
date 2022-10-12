@@ -31,5 +31,9 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "jest": "^21.2.1"
+  },
+  "resolutions": {
+    "minimist": "^1.2.5",
+    "glob-parent":  "^5.1.2"
   }
 }
