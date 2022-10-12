@@ -21,3 +21,4 @@ If any of the tasks fails at any point, the pipeline should be stopped and an em
 should be sent with relevant information
 
 Email alerts are handled naturally by Azure pipelines. 
+
