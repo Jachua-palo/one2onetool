@@ -38,6 +38,7 @@ steps:
   displayName: Login to Docker Hub
   inputs:
     command: login
+    repository: 'jasnipes/one2on2'
     containerRegistry: dockerhub
 
 - task: Docker@2
