@@ -18,7 +18,7 @@ pool:
 
 steps:
 - script: |
-   sed -i 's/Question.json/Question-test.json/g' models/questionRepository.js
+   sed -i 's/Questions.json/Questions-test.json/g' .env
   condition: and(succeeded(), eq(variables.isRelease, 'false'))
   displayName: 'Change Question bank'
 
