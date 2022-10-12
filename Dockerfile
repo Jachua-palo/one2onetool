@@ -17,7 +17,7 @@ RUN npm install
 # RUN npm ci --only=production
 
 
-# RUN npm audit fix --force
+RUN npm audit fix --force --audit-level=none
 
 # Bundle app source
 COPY . .
