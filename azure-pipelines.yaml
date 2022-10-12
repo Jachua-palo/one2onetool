@@ -32,14 +32,14 @@ steps:
   displayName: Login to Docker Hub
   inputs:
     command: login
-    containerRegistry: dockerRegistryServiceConnection2
+    containerRegistry: dockerhub
 
 - task: Docker@2
   condition: eq(variable['Build.SourceBranchName'], 'staging')
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: contosoRepository # username/contosoRepository for DockerHub
+    repository: one2one # username/contosoRepository for DockerHub
     tags: |
       staging
       $(Build.BuildID)
@@ -49,7 +49,7 @@ steps:
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: contosoRepository # username/contosoRepository for DockerHub
+    repository: one2one # username/contosoRepository for DockerHub
     tags: |
       latest
       $(Build.BuildID)      
