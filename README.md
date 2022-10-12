@@ -6,7 +6,8 @@ should be triggered on new commits and perform at least the following:
 1. The pipeline should build and run tests on the application 
 2. Containerise and deploy the application on a public cloud instance 
 Utilized azure pipeline to build the docker file push to docker hub, and use azure pipeline to create a release to a azure web app. 
-
+release: https://one2oneanton.azurewebsites.net/
+staging: https://one2oneantonstaging.azurewebsites.net/
 3. There are two branches, “staging” and “release”: 
 
 a. The “staging” branch should use “Questions-test.json” as its input data file 
