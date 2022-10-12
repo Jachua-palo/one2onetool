@@ -61,3 +61,11 @@ steps:
       latest
       release
       $(Build.BuildID)      
+
+- task: AzureWebAppContainer@1
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
+  inputs:
+    azureSubscription: 'sub-sg-SRE-Devops (f3f2ca0d-ff22-4e12-b86f-b32ddf56d95b)'
+    appName: 'one2oneantonstaging'
+    containers: 'jasnipes/one2on2:staging'
+
