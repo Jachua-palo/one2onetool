@@ -8,14 +8,17 @@ trigger:
     include:
      - release
      - staging
- 
+
+variables:
+    isRelease: $[eq(variables['Build.SourceBranch'], 'refs/heads/release')]
+
 pool:
   vmImage: ubuntu-latest
 
 steps:
 - script: |
    sed -i 's/Question.json/Question-test.json/g' models/questionRepository.js
-  condition: eq(variable['Build.SourceBranch'], 'refs/heads/staging')
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
   displayName: 'Change Question bank'
 
 - task: NodeTool@0
@@ -35,7 +38,7 @@ steps:
     containerRegistry: dockerhub
 
 - task: Docker@2
-  condition: eq(variable['Build.SourceBranch'], 'refs/heads/staging')
+  condition: and(succeeded(), eq(variables.isRelease, 'false'))
   displayName: Build and Push
   inputs:
     command: buildAndPush
@@ -45,11 +48,12 @@ steps:
       $(Build.BuildID)
 
 - task: Docker@2
-  condition: eq(variable['Build.SourceBranch'], 'refs/heads/release')
+  condition: and(succeeded(), eq(variables.isRelease, 'true'))
   displayName: Build and Push
   inputs:
     command: buildAndPush
     repository: one2one # username/contosoRepository for DockerHub
     tags: |
       latest
+      release
       $(Build.BuildID)      
