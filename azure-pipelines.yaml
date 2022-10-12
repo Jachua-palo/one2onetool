@@ -46,7 +46,7 @@ steps:
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: one2one # username/contosoRepository for DockerHub
+    repository: 'jasnipes/one2on2' # username/contosoRepository for DockerHub
     tags: |
       staging
       $(Build.BuildID)
@@ -56,7 +56,7 @@ steps:
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: one2one # username/contosoRepository for DockerHub
+    repository: 'jasnipes/one2on2' # username/contosoRepository for DockerHub
     tags: |
       latest
       release
