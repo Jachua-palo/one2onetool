@@ -1,11 +1,11 @@
-FROM node:latest
+FROM node:alpine
 
 # Create app directory
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y nodejs \
-    npm  
+#RUN apt-get update && apt-get upgrade -y && \
+#    apt-get install -y nodejs \
+#    npm  
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
